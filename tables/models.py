@@ -32,7 +32,9 @@ class Organization(db.Model):
     name = db.Column(db.String(30), nullable=False)
     contacts = db.Column(db.Text, nullable=False)
 
-    posts = db.relationship("Post", backref="user", lazy='dynamic')
+    # posts = db.relationship("Post", backref="user", lazy='dynamic')
+    posts = db.relationship("Post", backref="org", lazy='dynamic')
+    # private_posts = db.relationship("Post", backref="private_org", lazy='dynamic')
     participants = db.relationship("Position", backref="org", lazy="dynamic")
 
 
@@ -47,8 +49,14 @@ class Post(db.Model):
     help_desc = db.Column(db.Text(300), nullable=False)
 
     id_org = db.Column(db.Integer, db.ForeignKey("organizations.id"))
+    id_org_private = db.Column(db.Integer, default=0)
 
     reviews = db.relationship("Review", backref="post", lazy="dynamic")
+
+    def org_private(self):
+        if self.id_org_private == 0:
+            return None
+        return Organization.query.filter(Organization.id == self.id_org_private).first()
 
     def __repr__(self):
         return f'<Post {self.id} {self.name}>'
@@ -80,18 +88,20 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     help_desc = db.Column(db.Text(300), nullable=False)
+    make_better_desc = db.Column(db.Text(300), nullable=False)
     time_option = db.Column(db.Text(10), nullable=False)
     contacts = db.Column(db.Text(300), nullable=False)
 
     id_post = db.Column(db.Integer, db.ForeignKey("posts.id"))
 
-    def __init__(self, help_desc, time_option, contacts, id_post):
+    def __init__(self, help_desc, time_option, contacts, id_post, make_better_desc):
         if time_option not in ("ok", "bad", "trouble"):
             raise TypeError("impossible value if time_option var")
         self.id_post = id_post
         self.help_desc = help_desc
         self.contacts = contacts
         self.time_option = time_option
+        self.make_better_desc = make_better_desc
 
     def __repr__(self):
         return f'<Review {self.id_post}>'

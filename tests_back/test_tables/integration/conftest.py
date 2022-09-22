@@ -14,6 +14,8 @@ def test_db():
     app.app_context().push()
     db.create_all()
 
+    db.session.remove()
+
     # создаём тестовые данные по такому сценарию:
     # создаём 4 пользователя, 2 организации
 
@@ -50,16 +52,24 @@ def test_db():
         db.session.add(Post(name=post[0], date_start=post[1], short_desc=post[2], help_desc=post[3], id_org=1))
     for post in posts[1]:
         db.session.add(Post(name=post[0], date_start=post[1], short_desc=post[2], help_desc=post[3], id_org=2))
+
+    # и один перонально для второй организации от первой
+    db.session.add(Post(name=fake.name(), date_start=datetime.date(year=int(fake.date().split("-")[0]),
+                                                                   month=int(fake.date().split("-")[1]),
+                                                                   day=int(fake.date().split("-")[2])),
+                        short_desc=fake.text(), help_desc=fake.text(), id_org=1, id_org_private=2))
+
     db.session.commit()
 
     # добавим ревью для теста
     # на 1-й пост
-    rev = Review(fake.text(), "ok", fake.text(), 1)
+    rev = Review(fake.text(), "ok", fake.text(), 1, fake.text())
     db.session.add(rev)
     db.session.commit()
 
     data = {"users": users, "organizations": organizations, "positions": positions, "posts": posts,
-            "users_of_orgs": {1: [1, 3],  2: [1, 2, 4]}, "review": 1}
+            "users_of_orgs": {1: [1, 3], 2: [1, 2, 4]}, "review": 1, "posts_of_org": {1: [1, 2, 5], 2: [3, 4]}}
+
     yield {"test_db": db, "data": data}
     db.session.remove()
     db.drop_all()
