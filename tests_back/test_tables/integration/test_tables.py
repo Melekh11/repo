@@ -16,7 +16,7 @@ def test_user_of_org(test_db):
     data = test_db["data"]
 
     for i in range(2):
-        assert sorted(members[i]) == data["users_of_orgs"][i+1]
+        assert sorted(members[i]) == data["users_of_orgs"][i + 1]
 
 
 def test_review(test_db):
@@ -44,4 +44,3 @@ def test_posts_of_org(test_db):
 def test_private_post(test_db):
     post = Post.query.filter(Post.id_org_private == 2).first()
     assert post.org_private().id == 2
-
