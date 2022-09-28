@@ -3,7 +3,7 @@ from back_utils.checkers import get_user_by_id, check_unique_user
 from tables.schemas import UserSchema
 from flask_restful.reqparse import RequestParser as ReqPars
 from back_utils.sql_error_decorator import sqlalchemy_decorator
-from app import db
+from database import db
 
 user_shame = UserSchema()
 parser = ReqPars()
@@ -20,7 +20,7 @@ class User(Resource):
         if user:
             return user_shame.dump(user), 200
         else:
-            return "there is no user with id {}".format(user_id), 404
+            return f"there is no user with id {user_id}", 404
 
     @sqlalchemy_decorator
     def patch(self, user_id):

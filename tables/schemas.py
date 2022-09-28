@@ -1,5 +1,12 @@
+from flask_marshmallow import Marshmallow
 from tables.models import User
-from app import ma
+
+ma = Marshmallow()
+
+
+def init_ma(app):
+    with app.app_context():
+        ma.init_app(app)
 
 
 class UserSchema(ma.SQLAlchemySchema):

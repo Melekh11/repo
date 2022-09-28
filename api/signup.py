@@ -4,7 +4,7 @@ from back_utils.sql_error_decorator import sqlalchemy_decorator
 from back_utils.checkers import check_unique_user
 from tables.models import User
 from tables.schemas import UserSchema
-from app import db
+from database import db
 
 parser = ReqPars()
 parser.add_argument("name", type=str, required=True, help="missing name atr")
@@ -17,8 +17,9 @@ parser.add_argument("password", type=str, required=True, help="missing password 
 class SignUp(Resource):
     @sqlalchemy_decorator
     def post(self):
-        user_shame = UserSchema()
         args = parser.parse_args()
+        user_shame = UserSchema()
+
         if check_unique_user(args["login"], args["email"]):
             user = User(
                 name=args["name"],

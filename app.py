@@ -1,13 +1,14 @@
 from app_config import Config
 from flask_migrate import Migrate
 from create_app import create_app
+from tables.models import User
 from flask_restful import Api
-from flask_marshmallow import Marshmallow
+from database import db
 
 
-app, db = create_app(Config)
+app = create_app(Config)
 api = Api(app)
-ma = Marshmallow(app)
+
 migrate = Migrate(app, db)
 
 
