@@ -1,4 +1,6 @@
-from tables.models import User, Organization
+from tables.__all_models import User, Organization
+
+# человекочитаемые helper'ы
 
 
 def check_unique_login(login):

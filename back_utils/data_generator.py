@@ -5,6 +5,7 @@ from tables.models import User, Organization, Position, Post, Review
 fake = Faker()
 
 
+# создаёт экземпляры класса User c фейковыми данными
 def create_users(n=1):
     data_users = [
         (
@@ -32,6 +33,7 @@ def create_users(n=1):
     return users
 
 
+# создаёт экземпляры класса Organization c фейковыми данными
 def create_org(n=1):
     if n == 1:
         return Organization(name=fake.name(), contacts=fake.text())
@@ -43,17 +45,19 @@ def create_org(n=1):
     )
 
 
+# создаёт экземпляр класса Position
 def create_position(user, org, status):
     return Position(user_id=user.id, org_id=org.id, status=status)
 
 
+# создаёт экземпляры класса Post c фейковыми данными
 def create_post(id_org, id_private=-1):
     data_post = [
         fake.name(),
         datetime.date(
             year=int(fake.date().split("-")[0]),
             month=int(fake.date().split("-")[1]),
-            day=min(int(fake.date().split("-")[2]), 30),
+            day=int(fake.date().split("-")[2]) % 28,
         ),
         fake.text(),
         fake.text(),

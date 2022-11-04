@@ -1,8 +1,8 @@
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser as ReqPars
 from back_utils.sql_error_decorator import sqlalchemy_decorator
-from back_utils.checkers import check_unique_user
-from tables.models import User
+from back_utils.helpers import check_unique_user
+from tables.__all_models import User
 from database import db
 
 parser = ReqPars()

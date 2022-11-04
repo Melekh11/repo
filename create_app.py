@@ -1,6 +1,7 @@
 from flask import Flask
 
 
+# создание экземляра flask приложения с нужным config'ом
 def create_app(config_obj):
     app = Flask(__name__)
     app.config.from_object(config_obj)

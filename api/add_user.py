@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser as ReqPars
-from back_utils.checkers import (
+from back_utils.helpers import (
     check_user_by_login,
     get_user_by_login,
     get_org_by_name,
@@ -8,7 +8,7 @@ from back_utils.checkers import (
 )
 from back_utils.sql_error_decorator import sqlalchemy_decorator
 from database import db
-from tables.models import Position
+from tables.__all_models import Position
 
 parser = ReqPars()
 parser.add_argument(
@@ -18,6 +18,7 @@ parser.add_argument("org_name", type=str, required=True, help="missing org_name 
 parser.add_argument("status", type=str, required=True, help="missing status atr")
 
 
+# класс API для добавления позиции пользователю
 class AddUser(Resource):
     @sqlalchemy_decorator
     def post(self):

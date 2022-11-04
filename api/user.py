@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from back_utils.checkers import get_user_by_id, check_unique_user
+from back_utils.helpers import get_user_by_id, check_unique_user
 from flask_restful.reqparse import RequestParser as ReqPars
 from back_utils.sql_error_decorator import sqlalchemy_decorator
 from database import db
@@ -13,17 +13,17 @@ parser.add_argument("password", type=str)
 
 
 class User(Resource):
-    def get(self, id):
-        user = get_user_by_id(id)
+    def get(self, user_id):
+        user = get_user_by_id(user_id)
         if user:
             return user.serialize(), 200
         else:
-            return f"there is no user with id {id}", 403
+            return f"there is no user with id {user_id}", 403
 
     @sqlalchemy_decorator
-    def patch(self, id):
+    def patch(self, user_id):
         args = parser.parse_args()
-        user = get_user_by_id(id)
+        user = get_user_by_id(user_id)
         if user:
             if check_unique_user(args["login"], args["email"]):
                 user.name = args["name"]
@@ -31,6 +31,8 @@ class User(Resource):
                 user.login = args["login"]
                 user.email = args["email"]
                 try:
+                    if user.check_password(args["password"]):
+                        return "you use the same password", 400
                     user.set_password(args["password"])
                 except Exception:
                     pass

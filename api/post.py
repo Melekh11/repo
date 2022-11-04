@@ -1,9 +1,10 @@
 from flask_restful import Resource
-from tables.models import Post as TablePost
+from tables.__all_models import Post as TablePost
 from back_utils.delete_old_posts import delete_old_posts
 from database import db
 
 
+# класс API для получения/ удаления поста
 class Post(Resource):
     def get(self, id):
         post = TablePost.query.filter(TablePost.id == id).first()
@@ -22,6 +23,7 @@ class Post(Resource):
             return {"ans": "there is no post with id {}".format(id)}, 403
 
 
+# класс API для получения всех постов
 class Posts(Resource):
     def get(self):
         delete_old_posts()

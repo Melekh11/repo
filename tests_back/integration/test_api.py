@@ -1,10 +1,5 @@
 from faker import Faker
-from back_utils.data_generator import (
-    create_users,
-    create_org,
-    create_post,
-    create_position,
-)
+from back_utils.data_generator import create_users, create_org, create_post
 from database import db
 
 fake = Faker()
@@ -174,10 +169,14 @@ def test_posts_org(front_client):
 
 # python -m pytest tests_back/integration/test_api.py::test_create_post
 def test_create_post(front_client):
-    org = create_org()
+    fake_org = create_org()
     org_resp = front_client.post(
-        "test/org", json={"name": org.name, "contacts": org.contacts}
+        "test/org", json={"name": fake_org.name, "contacts": fake_org.contacts}
     )
+
+    assert org_resp.status_code == 201
+    assert org_resp.json["id"] == 1
+    assert fake_org.name is not None
 
     posts = [create_post(org_resp.json["id"]) for _ in range(5)]
 
@@ -190,7 +189,7 @@ def test_create_post(front_client):
                 "delta_time": int(post.delta_time.days),
                 "short_desc": post.short_desc,
                 "help_desc": post.help_desc,
-                "id_org": post.id_org,
+                "org_name": org_resp.json["name"],
             },
         )
 
@@ -222,12 +221,13 @@ def test_create_private_post(front_client):
             "delta_time": int(post.delta_time.days),
             "short_desc": post.short_desc,
             "help_desc": post.help_desc,
-            "id_org": post.id_org,
-            "id_org_private": post.id_org_private,
+            "org_name": org.name,
+            "org_private_name": org2.name,
         },
     )
 
     assert create_post_resp.status_code == 201
+
     assert create_post_resp.json["id_org_priv"] == org2_resp.json["id"]
 
 
@@ -248,7 +248,7 @@ def test_post(front_client):
             "delta_time": int(post.delta_time.days),
             "short_desc": post.short_desc,
             "help_desc": post.help_desc,
-            "id_org": post.id_org,
+            "org_name": org.name,
         },
     )
 
@@ -283,9 +283,9 @@ def test_add_user(front_client):
 
         assert add_user_resp.status_code == 201
         assert add_user_resp.json["user"] == user.serialize()
-        assert org.id in list(
+        assert org.name in list(
             map(
-                lambda position: position["org_id"],
+                lambda position: position["org"],
                 add_user_resp.json["user"]["positions"],
             )
         )

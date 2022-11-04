@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser as ReqPars
-from back_utils.checkers import get_user_by_login
+from back_utils.helpers import get_user_by_login
 
 parser = ReqPars()
 parser.add_argument("login", type=str, required=True, help="missing login atr")

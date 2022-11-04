@@ -16,6 +16,8 @@ import pytest
 fake = Faker()
 
 
+# создаём тестовое приложение и фейк клиента
+# после завершения работы удаляем все данные из фейковой таблицы
 @pytest.fixture()
 def front_client():
     app = create_app(Config)
@@ -36,7 +38,7 @@ def front_client():
 
     api.add_resource(SignUp, "/test/signup")
     api.add_resource(SignIn, "/test/signin")
-    api.add_resource(User, "/test/user/<id>")
+    api.add_resource(User, "/test/user/<user_id>")
     api.add_resource(CreateOrg, "/test/org")
     api.add_resource(Organization, "/test/org/<id>")
     api.add_resource(CreatePost, "/test/post")
@@ -49,6 +51,7 @@ def front_client():
     db.drop_all()
 
 
+# создаём тестовое приложение и вносим в бд данные для тестов
 @pytest.fixture(scope="module")
 def test_db():
     app = create_app(Config)
@@ -93,7 +96,7 @@ def test_db():
         for _ in range(2):
             posts.append(create_post(organizations[i].id))
 
-    # и один перонально для второй организации от первой
+    # и один персонально для второй организации от первой
     posts.append(create_post(organizations[0].id, id_private=organizations[1].id))
 
     for post in posts:

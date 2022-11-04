@@ -22,6 +22,7 @@ def test_user_of_org(test_db):
         assert sorted(members[i]) == test_db["users_of_orgs"][i + 1]
 
 
+# python -m pytest tests_back/integration/test_tables.py::test_review
 def test_review(test_db):
     revs = Review.query.get(1)
     assert revs.id_post == test_db["review"]
@@ -31,6 +32,7 @@ def test_review(test_db):
     assert post.reviews[0].time_option == "ok"
 
 
+# python -m pytest tests_back/integration/test_tables.py::test_posts_of_org
 def test_posts_of_org(test_db):
     posts = Post.query.all()
     posts_id = {}
@@ -44,6 +46,7 @@ def test_posts_of_org(test_db):
     assert posts_id == test_db["posts_of_org"]
 
 
+# python -m pytest tests_back/integration/test_tables.py::test_private_post
 def test_private_post(test_db):
     post = Post.query.filter(Post.id_org_private == 2).first()
     assert post.org_private().id == 2

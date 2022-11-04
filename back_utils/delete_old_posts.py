@@ -4,6 +4,7 @@ from database import db
 from tables.models import Post
 
 
+# удаление старых постов
 def delete_old_posts():
     all_posts = Post.query.all()
     for post in all_posts:

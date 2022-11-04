@@ -1,7 +1,8 @@
 from flask_restful import Resource
-from tables.models import Organization as Org
+from tables.__all_models import Organization as Org
 
 
+# класс API для получения / удаления организации
 class Organization(Resource):
     def get(self, id):
         org = Org.query.filter(Org.id == id).first()
