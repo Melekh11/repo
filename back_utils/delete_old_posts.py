@@ -1,11 +1,10 @@
 from datetime import date
-
 from database import db
-from tables.models import Post
+from tables.__all_models import Post
 
 
-# удаление старых постов
 def delete_old_posts():
+    """удаление старых постов"""
     all_posts = Post.query.all()
     for post in all_posts:
         if date.today() - post.date_start > post.delta_time:

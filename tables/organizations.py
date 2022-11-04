@@ -1,8 +1,9 @@
 from database import db
 
 
-# класс организации в таблицах бд
 class Organization(db.Model):
+    """класс организации в таблицах бд"""
+
     __tablename__ = "organizations"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
@@ -12,6 +13,10 @@ class Organization(db.Model):
     participants = db.relationship("Position", backref="org", lazy="dynamic")
 
     def serialize(self):
+        """
+        сериализация для отправки по HTTP
+        :return: dict
+        """
         return {
             "id": self.id,
             "name": self.name,

@@ -1,8 +1,9 @@
 from flask import Flask
 
 
-# создание экземляра flask приложения с нужным config'ом
 def create_app(config_obj):
+    """создание экземляра flask приложения с нужным config'ом"""
+
     app = Flask(__name__)
     app.config.from_object(config_obj)
 
@@ -11,6 +12,3 @@ def create_app(config_obj):
     init_db(app)
 
     return app
-
-
-from tables import models

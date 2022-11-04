@@ -18,8 +18,9 @@ parser.add_argument("org_name", type=str, required=True, help="missing org_name 
 parser.add_argument("status", type=str, required=True, help="missing status atr")
 
 
-# класс API для добавления позиции пользователю
 class AddUser(Resource):
+    """класс API для добавления позиции пользователю"""
+
     @sqlalchemy_decorator
     def post(self):
         args = parser.parse_args()

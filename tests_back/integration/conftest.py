@@ -16,10 +16,13 @@ import pytest
 fake = Faker()
 
 
-# создаём тестовое приложение и фейк клиента
-# после завершения работы удаляем все данные из фейковой таблицы
 @pytest.fixture()
 def front_client():
+    """
+    создаём тестовое приложение и фейк клиента
+    после завершения работы удаляем все данные из фейковой таблицы
+    :return: тестовый клиент
+    """
     app = create_app(Config)
     app.app_context().push()
     db.create_all()
@@ -51,9 +54,10 @@ def front_client():
     db.drop_all()
 
 
-# создаём тестовое приложение и вносим в бд данные для тестов
 @pytest.fixture(scope="module")
 def test_db():
+    """создаём тестовое приложение и вносим в бд данные для тестов"""
+
     app = create_app(Config)
     app.app_context().push()
     db.create_all()

@@ -10,8 +10,9 @@ parser.add_argument("name", type=str, required=True, help="missing login atr")
 parser.add_argument("contacts", type=str, required=True, help="missing password atr")
 
 
-# класс API для создания организации
 class CreateOrganization(Resource):
+    """класс API для создания организаций"""
+
     @sqlalchemy_decorator
     def post(self):
         args = parser.parse_args()

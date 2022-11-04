@@ -3,8 +3,9 @@ from tables.organizations import Organization
 import datetime
 
 
-# класс поста в таблицах БД
 class Post(db.Model):
+    """класс поста в таблицах бд"""
+
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
@@ -20,14 +21,23 @@ class Post(db.Model):
     reviews = db.relationship("Review", backref="post", lazy="dynamic")
 
     def org_private(self):
+        """
+        полуение организации по self.id_org_private
+        :return: Organization или None
+        """
         if self.id_org_private == 0:
             return None
         return Organization.query.filter(Organization.id == self.id_org_private).first()
 
     def __repr__(self):
+        """представление экземпляра класса"""
         return f"<Post {self.id} {self.name}>"
 
     def serialize(self):
+        """
+        сериализация для отправки по HTTP
+        :return: dict
+        """
         return {
             "id": self.id,
             "name": self.name,

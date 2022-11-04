@@ -14,6 +14,8 @@ parser.add_argument("password", type=str, required=True, help="missing password 
 
 
 class SignUp(Resource):
+    """класс API для регистарции пользователей"""
+
     @sqlalchemy_decorator
     def post(self):
         args = parser.parse_args()

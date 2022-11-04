@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from back_utils.helpers import get_user_by_id, check_unique_user
+from back_utils.helpers import get_user_by_id, check_unique_login
 from flask_restful.reqparse import RequestParser as ReqPars
 from back_utils.sql_error_decorator import sqlalchemy_decorator
 from database import db
@@ -13,7 +13,12 @@ parser.add_argument("password", type=str)
 
 
 class User(Resource):
+    """класс API для работы с пользователем"""
+
     def get(self, user_id):
+        """
+        :param user_id: iser id
+        """
         user = get_user_by_id(user_id)
         if user:
             return user.serialize(), 200
@@ -22,10 +27,13 @@ class User(Resource):
 
     @sqlalchemy_decorator
     def patch(self, user_id):
+        """
+        :param user_id: iser id
+        """
         args = parser.parse_args()
         user = get_user_by_id(user_id)
         if user:
-            if check_unique_user(args["login"], args["email"]):
+            if check_unique_login(args["login"]):
                 user.name = args["name"]
                 user.surname = args["surname"]
                 user.login = args["login"]

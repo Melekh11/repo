@@ -1,12 +1,16 @@
 import datetime
 from faker import Faker
-from tables.models import User, Organization, Position, Post, Review
+from tables.__all_models import User, Organization, Position, Post, Review
 
 fake = Faker()
 
 
-# создаёт экземпляры класса User c фейковыми данными
 def create_users(n=1):
+    """
+    создаёт экземпляры класса User c фейковыми данными
+    :param n: кол-во пользователей
+    :return: User[]
+    """
     data_users = [
         (
             user["name"].split()[0],
@@ -33,8 +37,12 @@ def create_users(n=1):
     return users
 
 
-# создаёт экземпляры класса Organization c фейковыми данными
 def create_org(n=1):
+    """
+    создаёт экземпляры класса Organization c фейковыми данными
+    :param n: кол-во организаций
+    :return: Organization[]
+    """
     if n == 1:
         return Organization(name=fake.name(), contacts=fake.text())
     return list(
@@ -45,13 +53,24 @@ def create_org(n=1):
     )
 
 
-# создаёт экземпляр класса Position
 def create_position(user, org, status):
+    """
+    создаёт экземпляр класса Position
+    :param user: экземпляр класса User
+    :param org: экземпляр класса Organization
+    :param status: статусс пользователя в проекте
+    :return: Position
+    """
     return Position(user_id=user.id, org_id=org.id, status=status)
 
 
-# создаёт экземпляры класса Post c фейковыми данными
 def create_post(id_org, id_private=-1):
+    """
+    создаёт экземпляры класса Post c фейковыми данными
+    :param id_org: id организации
+    :param id_private: id оргнаизации для приватного приглашения
+    :return: Post
+    """
     data_post = [
         fake.name(),
         datetime.date(
@@ -79,4 +98,10 @@ def create_post(id_org, id_private=-1):
 
 
 def create_review(id_post, time_option):
+    """
+    создаёт экземпляры класса Post c фейковыми данными
+    :param id_post: id поста
+    :param time_option: подходит ли установленное время
+    :return: Review
+    """
     return Review(fake.text(), time_option, fake.text(), id_post, fake.text())

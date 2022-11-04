@@ -22,8 +22,9 @@ parser.add_argument("org_name", type=str, required=True, help="missing org_name 
 parser.add_argument("org_private_name", type=str)
 
 
-# класс API для добавления поста организации
 class CreatePost(Resource):
+    """класс API для добавления поста организации"""
+
     @sqlalchemy_decorator
     def post(self):
         args = parser.parse_args()

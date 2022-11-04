@@ -2,8 +2,9 @@ from database import db
 
 
 class Review(db.Model):
-    __tablename__ = "reviews"
+    """класс ответов на посты в таблицах бд"""
 
+    __tablename__ = "reviews"
     id = db.Column(db.Integer, primary_key=True)
     help_desc = db.Column(db.Text(300), nullable=False)
     make_better_desc = db.Column(db.Text(300), nullable=False)
@@ -15,6 +16,10 @@ class Review(db.Model):
     def __init__(
         self, help_desc, time_option, contacts, id_post, make_better_desc, **kwargs
     ):
+        """
+        :param args: неименованные аргументы, данные ответа
+        :param kwargs: именованные аргументы
+        """
         super(Review, self).__init__(**kwargs)
 
         if time_option not in ("ok", "bad", "trouble"):
@@ -29,6 +34,10 @@ class Review(db.Model):
         return f"<Review {self.id_post}>"
 
     def serialize(self):
+        """
+        сериализация для отправки по HTTP
+        :return: dict
+        """
         return {
             "id": self.id,
             "help_desc": self.help_desc,

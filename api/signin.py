@@ -8,6 +8,8 @@ parser.add_argument("password", type=str, required=True, help="missing password 
 
 
 class SignIn(Resource):
+    """класс API для логина"""
+
     def post(self):
         args = parser.parse_args()
         user = get_user_by_login(args["login"])

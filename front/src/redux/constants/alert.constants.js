@@ -1,0 +1,9 @@
+export const alertConstants = {
+    SUCCESS: 'ALERT_SUCCESS',
+    ERROR: 'ALERT_ERROR',
+    CLEAR: 'ALERT_CLEAR',
+    VALIDATION: "VALIDATION",
+    REGISTER: "REGISTER",
+    LOGIN: "LOGIN",
+    UPDATE_PROFILE: "UPDATE_PROFILE"
+};
