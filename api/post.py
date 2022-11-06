@@ -36,4 +36,4 @@ class Posts(Resource):
 
     def get(self):
         delete_old_posts()
-        return [post.serialize() for post in TablePost.query.all()]
+        return [post.serialize() for post in TablePost.query.all()], 200

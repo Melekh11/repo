@@ -33,20 +33,27 @@ class User(Resource):
         args = parser.parse_args()
         user = get_user_by_id(user_id)
         if user:
-            if check_unique_login(args["login"]):
-                user.name = args["name"]
-                user.surname = args["surname"]
-                user.login = args["login"]
-                user.email = args["email"]
-                try:
-                    if user.check_password(args["password"]):
-                        return "you use the same password", 400
-                    user.set_password(args["password"])
-                except Exception:
-                    pass
+            if args["password"] is not None and args["password"] != "":
+                if user.check_password(args["password"]):
+                    return "you use the same password", 400
+                user.set_password(args["password"])
                 db.session.commit()
                 return user.serialize(), 200
             else:
-                return "existed user", 406
+                if check_unique_login(args["login"]):
+                    user.name = args["name"]
+                    user.surname = args["surname"]
+                    user.login = args["login"]
+                    user.email = args["email"]
+                    try:
+                        if user.check_password(args["password"]):
+                            return "you use the same password", 400
+                        user.set_password(args["password"])
+                    except Exception:
+                        pass
+                    db.session.commit()
+                    return user.serialize(), 200
+                else:
+                    return "existed user", 406
         else:
             return "there is no user with id {}".format(id), 404

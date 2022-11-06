@@ -1,4 +1,4 @@
-from tables.__all_models import User, Organization
+from tables.__all_models import User, Organisation
 
 # человекочитаемые helper'ы
 
@@ -36,7 +36,7 @@ def check_org_by_name(name):
     :param name: имя организации для проверки
     :return: boolean
     """
-    return len(Organization.query.filter(Organization.name == name).all()) == 1
+    return len(Organisation.query.filter(Organisation.name == name).all()) == 1
 
 
 def get_user_by_id(id):
@@ -63,7 +63,7 @@ def get_org_by_name(name):
     :param name: имя искомой организации
     :return: Organization
     """
-    return Organization.query.filter(Organization.name == name).first()
+    return Organisation.query.filter(Organisation.name == name).first()
 
 
 def check_unique_org(name):
@@ -72,4 +72,14 @@ def check_unique_org(name):
     :param name: имя для поиска
     :return: boolean
     """
-    return len(Organization.query.filter(Organization.name == name).all()) == 0
+    return len(Organisation.query.filter(Organisation.name == name).all()) == 0
+
+
+def check_unique_user(login, email):
+    """
+    проверка уникальности данных для создания пользователя
+    :param login: логин для сравнение
+    :param email: почта для сравнения
+    :return: boolean
+    """
+    return check_unique_login(login) and check_unique_email(email)

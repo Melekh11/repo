@@ -89,7 +89,7 @@ function disableValidation(name) {
 function checkFields(values, checkers) {
   return (dispatch) => {
     dispatch(setIsError(false));
-    for (const key of checkers) {
+    for (const key in checkers) {
             dispatch(checkField(values[key], checkers[key], key));
         }
 

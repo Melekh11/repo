@@ -5,6 +5,9 @@ import {alertConstants} from "../constants/alert.constants";
 import {orgModel} from "../../models/org.model";
 import {ROUTES} from "../../components/router";
 import {userConstants} from "../constants/user.constants";
+import {postModel} from "../../models/post.model";
+import {orgConstants} from "../constants/org.constants";
+import {userModel} from "../../models/user.model";
 
 
 /** создание организации
@@ -24,6 +27,7 @@ function createOrg(org, checkers, navigate) {
                         status: "moder",
                         orgName: org.title
                     }).then((resp) => {
+                        console.log(resp.user);
                         dispatch(updateUser(resp.user))
                     })
                     navigate(ROUTES.home);
@@ -38,6 +42,7 @@ function createOrg(org, checkers, navigate) {
 
     // событие изменения данных пользователя
     function updateUser(user) {
+        localStorage.setItem('user', JSON.stringify(user));
         return {type: userConstants.LOGIN_SUCCESS, user: user, positions: user.positions}
     }
 }
@@ -55,7 +60,7 @@ function createPost(data, checkers, navigate) {
         const state = store.getState();
         if (!state.validator.isError) {
             console.log(state.authentication.user);
-            orgModel.createPost({...data, login: state.authentication.user.login})
+            postModel.createPost({...data, login: state.authentication.user.login})
                 .then(() => navigate(ROUTES.home))
                 .catch(error => {
                     dispatch(alertActions.error(alertConstants.UPDATE_PROFILE, error));
@@ -66,8 +71,69 @@ function createPost(data, checkers, navigate) {
     }
 }
 
+function getOrgById(id){
+    return dispatch => {
+        orgModel.getOrgById(id)
+            .then(org => {
+                dispatch(setCurrentOrg(org));
+            })
+    }
+
+    function setCurrentOrg(org){
+        return {type: orgConstants.SET_CURRENT_ORG, org: org}
+    }
+}
+
+function getOrgByName(name, checker, navigate){
+    return dispatch  => {
+        dispatch(validatorActions.checkFields(name, checker));
+        const state = store.getState();
+        if (!state.validator.isError) {
+            orgModel.getOrgs()
+                .then(orgs  => {
+                    let wasFound = false;
+                    orgs.forEach(org => {
+                        console.log(org.name, name);
+                        if (org.name === name.orgName){
+                            wasFound = true;
+                            dispatch(setCurrentOrg(org));
+                            navigate(`${ROUTES.org}/${org.id}`);
+                        }
+                    })
+                    if (!wasFound){
+                        dispatch(alertActions.error(alertConstants.UPDATE_PROFILE,
+                            `организации с именем ${name.orgName} не существует`));
+                    }
+                })
+        } else {
+            dispatch(alertActions.error(alertConstants.UPDATE_PROFILE, "не все поля валидны"));
+        }
+    }
+
+    function setCurrentOrg(org){
+        return {type: orgConstants.SET_CURRENT_ORG, org: org}
+    }
+}
+
+function deleteOrgById(id){
+    return dispatch => {
+        orgModel.deleteOrgById(id);
+        userModel.getUser(store.getState().authentication.user.id)
+            .then(user => {
+                dispatch(updateUser(user));
+            })
+    }
+
+    function updateUser(user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        return {type: userConstants.LOGIN_SUCCESS, user: user, positions: user.positions}
+    }
+}
 
 export const orgActions = {
     createOrg,
-    createPost
+    createPost,
+    getOrgById,
+    getOrgByName,
+    deleteOrgById
 }

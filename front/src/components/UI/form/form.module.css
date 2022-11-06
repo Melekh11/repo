@@ -37,6 +37,10 @@ form.bigSize{
     font-family: "Inter", sans-serif;
 }
 
+.alert{
+    background-color: red;
+}
+
 .secundus {
     display: flex;
     align-items: center;

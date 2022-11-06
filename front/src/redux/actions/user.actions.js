@@ -5,6 +5,9 @@ import {store} from "../store";
 import {validatorActions} from "./validator.actions";
 import {ROUTES} from "../../components/router";
 import {alertConstants} from "../constants/alert.constants";
+// import {orgActions} from "./org.actions";
+// import {postsAction} from "./posts.actions";
+// import {orgModel} from "../../models/org.model";
 
 
 /**
@@ -148,8 +151,24 @@ function changePassword(user, checkers, navigate) {
  */
 function logout() {
     userModel.logout();
+
     return {
         type: userConstants.LOGOUT
+    }
+}
+
+function addUser(data, checkers, navigate){
+    return dispatch => {
+        dispatch(validatorActions.checkFields(data, checkers));
+        if (!store.getState().validator.isError) {
+            userModel.addUser(data)
+                .then(navigate(ROUTES.home))
+                .catch(error => {
+                    dispatch(alertActions.error(alertConstants.UPDATE_PROFILE, error));
+                })
+        } else {
+            dispatch(alertActions.error(alertConstants.UPDATE_PROFILE, "не все поля валидны"));
+        }
     }
 }
 
@@ -158,5 +177,6 @@ export const userActions = {
     login,
     logout,
     changeProfile,
-    changePassword
+    changePassword,
+    addUser
 }

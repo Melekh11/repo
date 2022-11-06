@@ -37,7 +37,7 @@ class User(db.Model):
             "login": self.login,
             "email": self.email,
             "positions": [
-                {"status": pos.status, "org": pos.get_org().name}
+                {"status": pos.status, "org": pos.get_org().name, "org_id": pos.org_id}
                 for pos in self.positions
             ],
         }

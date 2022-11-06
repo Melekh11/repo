@@ -45,4 +45,6 @@ class Review(db.Model):
             "time_option": self.time_option,
             "contacts": self.contacts,
             "id_post": self.id_post,
+            "org_name": self.post.org.name,
+            "post_name": self.post.name,
         }

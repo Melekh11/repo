@@ -14,27 +14,6 @@ function createOrg(org){
     return fetch(`/org`, requestParams).then(handleResponse);
 }
 
-/**
- * запрос на ручку создания поста
- * @param data
- * @returns {Promise<Response>}
- */
-function createPost(data){
-    const requestParams = {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            name: data.title,
-            date_start: data.eventDate,
-            delta_time:  data.deltaTime,
-            short_desc: data.eventDescription,
-            help_desc: data.eventHelpDescription,
-            org_name: data.orgName,
-            org_private_name: data.privateOrgName
-        })
-    }
-    return fetch(`/post`, requestParams).then(handleResponse);
-}
 
 /**
  * запрос на ручку создания позиции
@@ -54,8 +33,38 @@ function createPosition(data){
     return fetch(`/add-user`, requestParams).then(handleResponse);
 }
 
+function getOrgById(id){
+    const requestParams = {
+        method: "GET",
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`/org/${id}`, requestParams).then(handleResponse);
+}
+
+function getOrgs(){
+    const requestParams = {
+        method: "GET",
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    return fetch(`/orgs`, requestParams).then(handleResponse);
+}
+
+function deleteOrgById(id){
+    const requestParams = {
+        method: "DELETE",
+        headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch(`/org/${id}`, requestParams);
+}
+
+
 export const orgModel = {
     createOrg,
-    createPost,
-    createPosition
+    createPosition,
+    getOrgById,
+    getOrgs,
+    deleteOrgById
 }

@@ -1,5 +1,5 @@
 from database import db
-from tables.organizations import Organization
+from tables.organisations import Organisation
 from tables.users import User
 
 POSITIONS = ("user", "moder")
@@ -11,7 +11,7 @@ class Position(db.Model):
     __tablename__ = "positions"
     __table_args__ = (db.PrimaryKeyConstraint("user_id", "org_id"),)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique=False)
-    org_id = db.Column(db.Integer, db.ForeignKey("organizations.id"), unique=False)
+    org_id = db.Column(db.Integer, db.ForeignKey("organisations.id"), unique=False)
     status = db.Column(db.String(10))
 
     def __init__(self, user_id, org_id, status, **kwargs):
@@ -47,4 +47,4 @@ class Position(db.Model):
         получение организации по self.org_id
         :return: Organization
         """
-        return Organization.query.filter(Organization.id == self.org_id).first()
+        return Organisation.query.filter(Organisation.id == self.org_id).first()

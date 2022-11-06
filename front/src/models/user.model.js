@@ -28,6 +28,7 @@ function login(user){
     return fetch(`signin`, requestParams)
         .then(handleResponse)
         .then((user) => {
+            console.log(user);
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         });
@@ -72,6 +73,19 @@ function getUser(id){
         });
 }
 
+function addUser(data){
+    const requestParams = {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            user_login: data.login,
+            org_name: data.orgName,
+            status: data.positionName
+        })
+    };
+    return fetch(`/add-user`, requestParams).then(handleResponse)
+}
+
 /**
  * удаляем из localStorage пользователя
  */
@@ -84,5 +98,6 @@ export const userModel = {
     login,
     logout,
     changeProfile,
-    getUser
+    getUser,
+    addUser
 }

@@ -1,0 +1,25 @@
+.post{
+    width: 400px;
+    max-height: 250px;
+    border-radius: 39px;
+    background-color: #DDDDDD;
+    margin: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.post_title{
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    margin: 15px;
+}
+
+.post_description{
+    flex-grow: 1;
+    font-size: 14px;
+    width: 80%;
+    overflow: auto;
+    margin: 5px;
+}

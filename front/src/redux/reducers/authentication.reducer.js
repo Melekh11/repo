@@ -1,7 +1,7 @@
 import { userConstants } from "../constants/user.constants";
 
 let user = JSON.parse(localStorage.getItem('user'));
-const initialState = user ? { logged: true, user } : {};
+const initialState = user ? { logged: true, user } : {logged: false};
 
 /**
  * в зависимости от типа события меняет state redux'а
@@ -17,7 +17,7 @@ function authenticationReducer(state = initialState, action) {
                 user: action.user
             };
         case userConstants.LOGIN_SUCCESS:
-            console.log(action.user, action.positions);
+            console.log(action.positions);
             return {
                 logged: true,
                 user: {...action.user, positions: action.positions}

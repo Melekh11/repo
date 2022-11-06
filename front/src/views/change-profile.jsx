@@ -152,6 +152,7 @@ const ChangeProfile = () => {
                         fieldName={"password"}
                         errorText={passwordError}
                         setValue={setPasswordValue}
+                        type={"password"}
                     />
 
                     <Input
@@ -161,6 +162,7 @@ const ChangeProfile = () => {
                         fieldName={"confirmPassword"}
                         errorText={confirmPasswordError}
                         setValue={setPasswordValue}
+                        type={"password"}
                     />
 
                     <button

@@ -1,5 +1,5 @@
 from database import db
-from tables.organizations import Organization
+from tables.organisations import Organisation
 import datetime
 
 
@@ -15,7 +15,7 @@ class Post(db.Model):
     short_desc = db.Column(db.Text(300), nullable=False)
     help_desc = db.Column(db.Text(300), nullable=False)
 
-    id_org = db.Column(db.Integer, db.ForeignKey("organizations.id"))
+    id_org = db.Column(db.Integer, db.ForeignKey("organisations.id"))
     id_org_private = db.Column(db.Integer, default=0)
 
     reviews = db.relationship("Review", backref="post", lazy="dynamic")
@@ -38,6 +38,9 @@ class Post(db.Model):
         сериализация для отправки по HTTP
         :return: dict
         """
+        org_priv_name = ""
+        if self.id_org_private > 0:
+            org_priv_name = self.org_private().name
         return {
             "id": self.id,
             "name": self.name,
@@ -48,4 +51,6 @@ class Post(db.Model):
             "help_desc": self.help_desc,
             "id_org": self.id_org,
             "id_org_priv": self.id_org_private,
+            "org_name": self.org.name,
+            "org_priv_name": org_priv_name,
         }

@@ -1,12 +1,12 @@
 .header{
     background-color: #FFD643;
     width: 100%;
-    height: 80px;
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     align-items: center;
     font-size: 3em;
-    padding-right: 30px;
+    /*padding-right: 30px;*/
+    padding: 10px;
 }
 
 .round {
@@ -16,4 +16,12 @@
     width: 40px;
     border-radius: 50%;
     background-color: gray;
+}
+
+.link{
+    align-self: center;
+    font-size: 18px;
+    text-decoration: none;
+    margin: 0 10px;
+    font-family: "Inter Bold", sans-serif;
 }

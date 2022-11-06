@@ -11,6 +11,8 @@ import {Link, useNavigate} from "react-router-dom";
 import {validatorActions} from "../redux/actions/validator.actions";
 import {ROUTES} from "../components/router";
 import {Header} from "../components/UI/header/header";
+import {postConstants} from "../redux/constants/post.constants";
+import {reviewConstants} from "../redux/constants/review.constants";
 
 
 // вью страницы регистрации
@@ -42,6 +44,8 @@ const SignIn = () => {
 
     // при монтировании компонента чистим валидацию и отключаем проверку второго пароля
     useEffect(() => {
+        dispatch({type: postConstants.CLEAR_POSTS});
+        dispatch({type: reviewConstants.CLEAR_REVIEWS});
         dispatch(userActions.logout());
         dispatch(validatorActions.cleanValidator());
         dispatch(validatorActions.disablePasswordValidation());

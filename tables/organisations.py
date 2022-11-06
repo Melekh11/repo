@@ -1,10 +1,10 @@
 from database import db
 
 
-class Organization(db.Model):
+class Organisation(db.Model):
     """класс организации в таблицах бд"""
 
-    __tablename__ = "organizations"
+    __tablename__ = "organisations"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
     contacts = db.Column(db.Text, nullable=False)
@@ -21,6 +21,9 @@ class Organization(db.Model):
             "id": self.id,
             "name": self.name,
             "contacts": self.contacts,
-            "posts": [post.id for post in self.posts],
+            "posts": [
+                {"id": post.id, "name": post.name, "desc": post.short_desc}
+                for post in self.posts
+            ],
             "participants": [position.user_id for position in self.participants],
         }
