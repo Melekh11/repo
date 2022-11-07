@@ -31,7 +31,6 @@ function getAll(){
                     filterReviews = reviews.filter(review => {
                         let ans = false;
                         userPositions.forEach(userPosition => {
-                            console.log(userPosition.org_id, review.id_org)
                             if (userPosition.org_id === review.org_id){
                                 ans = true;
                             }
@@ -39,10 +38,10 @@ function getAll(){
                         return ans;
                     })
                 }
-                if (isAll) {
-                    dispatch(updateReviews(reviews));
-                } else {
+                if (!isAll) {
                     dispatch(updateReviews(filterReviews));
+                } else {
+                    dispatch(updateReviews([]));
                 }
             })
     }

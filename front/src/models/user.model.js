@@ -67,7 +67,7 @@ function getUser(id){
         headers: { 'Content-Type': 'application/json' }
     }
 
-    return fetch(`user/${id}`, requestParams)
+    return fetch(`/user/${id}`, requestParams)
         .then(handleResponse)
         .then((newUser) => {
             return newUser;

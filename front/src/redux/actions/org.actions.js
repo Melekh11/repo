@@ -117,14 +117,18 @@ function getOrgByName(name, checker, navigate){
 
 function deleteOrgById(id){
     return dispatch => {
-        orgModel.deleteOrgById(id);
-        userModel.getUser(store.getState().authentication.user.id)
-            .then(user => {
-                dispatch(updateUser(user));
+        orgModel.deleteOrgById(id)
+            .then(() => {
+                userModel.getUser(store.getState().authentication.user.id)
+                    .then(user => {
+                        dispatch(updateUser(user));
+                    })
             })
+
     }
 
     function updateUser(user) {
+        localStorage.removeItem("user");
         localStorage.setItem('user', JSON.stringify(user));
         return {type: userConstants.LOGIN_SUCCESS, user: user, positions: user.positions}
     }

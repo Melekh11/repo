@@ -57,7 +57,7 @@ function deleteOrgById(id){
         headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch(`/org/${id}`, requestParams);
+    return fetch(`/org/${id}`, requestParams);
 }
 
 

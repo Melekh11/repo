@@ -1,6 +1,9 @@
 import {postConstants} from "../constants/post.constants";
 import {store} from "../store";
 import {postModel} from "../../models/post.model";
+import {userModel} from "../../models/user.model";
+import {userConstants} from "../constants/user.constants";
+import {reviewModel} from "../../models/review.model";
 
 function getAll() {
     return dispatch => {
@@ -69,7 +72,18 @@ function getPostById(id) {
 }
 
 function deletePost(id) {
-    postModel.deletePost(id);
+    return dispatch => {
+        postModel.deletePost(id);
+        userModel.getUser(store.getState().authentication.user.id)
+            .then(user => {
+                dispatch(updateUser(user));
+            })
+    }
+
+    function updateUser(user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        return {type: userConstants.LOGIN_SUCCESS, user: user, positions: user.positions}
+    }
 }
 
 export const postsAction = {

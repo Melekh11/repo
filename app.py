@@ -1,4 +1,7 @@
 import os
+
+from flask import send_from_directory
+
 from app_config import Config
 from flask_migrate import Migrate
 from create_app import create_app
@@ -10,11 +13,20 @@ api = Api(app)
 migrate = Migrate(app, db)
 
 
-# настройка выдачи статики
-@app.route("/")
-def index():
-    root_dir = os.path.dirname(os.getcwd())
-    return os.path.join(root_dir, "test_front", "build")
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+
+    if path != "" and os.path.exists(app.static_folder + "/" + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
+
+
+# # настройка выдачи статики
+# @app.route("/")
+# def index():
+#     return flask.send_from_directory(os.path.join("front", "build"), "index.html")
 
 
 from api.signup import SignUp
@@ -47,4 +59,4 @@ api.add_resource(Organisations, "/orgs")
 # запуск приложения
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, use_reloader=True, threaded=True)
