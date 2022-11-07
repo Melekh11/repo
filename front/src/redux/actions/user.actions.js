@@ -162,8 +162,9 @@ function addUser(data, checkers, navigate){
         dispatch(validatorActions.checkFields(data, checkers));
         if (!store.getState().validator.isError) {
             userModel.addUser(data)
-                .then(navigate(ROUTES.home))
+                .then(() => navigate(ROUTES.home))
                 .catch(error => {
+                     console.log("error")
                     dispatch(alertActions.error(alertConstants.UPDATE_PROFILE, error));
                 })
         } else {

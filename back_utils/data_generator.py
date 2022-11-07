@@ -1,6 +1,6 @@
 import datetime
 from faker import Faker
-from tables.__all_models import User, Organization, Position, Post, Review
+from tables.__all_models import User, Organisation, Position, Post, Review
 
 fake = Faker()
 
@@ -44,10 +44,10 @@ def create_org(n=1):
     :return: Organization[]
     """
     if n == 1:
-        return Organization(name=fake.name(), contacts=fake.text())
+        return Organisation(name=fake.name(), contacts=fake.text())
     return list(
         map(
-            lambda org: Organization(name=org[0], contacts=org[1]),
+            lambda org: Organisation(name=org[0], contacts=org[1]),
             [(fake.name(), fake.text()) for _ in range(n)],
         )
     )
@@ -76,7 +76,7 @@ def create_post(id_org, id_private=-1):
         datetime.date(
             year=int(fake.date().split("-")[0]),
             month=int(fake.date().split("-")[1]),
-            day=int(fake.date().split("-")[2]) % 28,
+            day=int(fake.date().split("-")[2]),
         ),
         fake.text(),
         fake.text(),

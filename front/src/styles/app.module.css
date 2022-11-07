@@ -24,13 +24,13 @@
 }
 
 .titleSmall{
-    margin: 5px;
+    margin: 15px 0;
     font-family: "Inter Bold", sans-serif;
     font-size: 20px;
 }
 
 .text{
-    margin-left: 5px;
+    margin: 15px 0;
     font-family: "Inter", sans-serif;
     font-size: 20px;
     max-width: 500px;

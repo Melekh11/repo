@@ -15,7 +15,6 @@ const Header = () => {
     const isLogged = useSelector(state => state.authentication.logged);
     const user = useSelector(state => state.authentication.user);
     let isModer = false;
-    console.log(user);
     if (isLogged && user && user.positions) {
         isModer = user.positions.filter((position) => position.status === "moder").length > 0;
     }

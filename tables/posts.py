@@ -27,7 +27,7 @@ class Post(db.Model):
         """
         if self.id_org_private == 0:
             return None
-        return Organization.query.filter(Organization.id == self.id_org_private).first()
+        return Organisation.query.filter(Organisation.id == self.id_org_private).first()
 
     def __repr__(self):
         """представление экземпляра класса"""

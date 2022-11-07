@@ -29,13 +29,14 @@ function getAll(){
                 if (userPositions && userPositions.length > 0){
                     isAll = false;
                     filterReviews = reviews.filter(review => {
-                        let isSame = false;
+                        let ans = false;
                         userPositions.forEach(userPosition => {
-                            if (userPosition.org_id === review.id_org){
-                                isSame = true;
+                            console.log(userPosition.org_id, review.id_org)
+                            if (userPosition.org_id === review.org_id){
+                                ans = true;
                             }
                         });
-                        return !isSame;
+                        return ans;
                     })
                 }
                 if (isAll) {

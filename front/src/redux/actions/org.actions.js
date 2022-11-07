@@ -130,10 +130,33 @@ function deleteOrgById(id){
     }
 }
 
+function setCurrentReviewedOrg(id){
+    return dispatch => {
+        orgModel.getOrgById(id)
+            .then(org => {
+                dispatch(setCurrentOrg(org));
+            })
+    }
+
+    function setCurrentOrg(org){
+        return {type: orgConstants.SET_CURRENT_REVIEWED_ORG, org: org}
+    }
+}
+
+function cleanCurrentReviewedOrg(){
+    return dispatch => {
+        dispatch({
+            type: orgConstants.CLEAR_CURRENT_REVIEWED_ORG
+        })
+    }
+}
+
 export const orgActions = {
     createOrg,
     createPost,
     getOrgById,
     getOrgByName,
-    deleteOrgById
+    deleteOrgById,
+    setCurrentReviewedOrg,
+    cleanCurrentReviewedOrg
 }

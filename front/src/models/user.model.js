@@ -29,6 +29,7 @@ function login(user){
         .then(handleResponse)
         .then((user) => {
             console.log(user);
+            localStorage.removeItem("user");
             localStorage.setItem('user', JSON.stringify(user));
             return user;
         });

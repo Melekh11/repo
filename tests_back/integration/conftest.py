@@ -34,7 +34,7 @@ def front_client():
     from api.signin import SignIn
     from api.user import User
     from api.create_org import CreateOrganization as CreateOrg
-    from api.org import Organization
+    from api.org import Organisation
     from api.create_post import CreatePost
     from api.post import Post
     from api.add_user import AddUser
@@ -43,7 +43,7 @@ def front_client():
     api.add_resource(SignIn, "/test/signin")
     api.add_resource(User, "/test/user/<user_id>")
     api.add_resource(CreateOrg, "/test/org")
-    api.add_resource(Organization, "/test/org/<id>")
+    api.add_resource(Organisation, "/test/org/<id>")
     api.add_resource(CreatePost, "/test/post")
     api.add_resource(Post, "/test/post/<id>")
     api.add_resource(AddUser, "/test/add-user")

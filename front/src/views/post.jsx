@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {postsAction} from "../redux/actions/post.actions";
 import {Link, useNavigate} from "react-router-dom";
 import {ROUTES} from "../components/router";
+import formClasses from "../components/UI/form/form.module.css";
+// import {orgActions} from "../redux/actions/org.actions";
 
 const Post = () => {
     const dispatch = useDispatch();
@@ -16,12 +18,28 @@ const Post = () => {
 
     const currentPost = useSelector(state => state.posts.currentPost);
 
+    let status = "reviewer";
+    const userPositions = useSelector(state => state.authentication.user.positions);
+
+    if (currentPost) {
+        userPositions.forEach(position => {
+            if (position.org_id === currentPost.id) {
+                status = position.status;
+            }
+        })
+    }
+
     useEffect(() => {
         dispatch(postsAction.getPostById(idPost));
     }, [])
 
-    function handleClick(){
+    function handleClickReview(){
         navigate(`${ROUTES.reviewCreate}/${idPost}`);
+    }
+
+    function deletePost(){
+        postsAction.deletePost(currentPost.id);
+        navigate(ROUTES.home);
     }
 
     return (
@@ -70,10 +88,27 @@ const Post = () => {
                                 этот пост отправлен только для организации {currentPost.org_priv_name}
                             </p>}
 
-                        <button
-                            className={fromClasses.prime}
-                            onClick={handleClick}
-                        >отозваться</button>
+                        {status === "reviewer" &&
+                            <button
+                                className={fromClasses.prime}
+                                onClick={handleClickReview}
+                            >отозваться</button>
+                        }
+
+                        {status === "moder" &&
+                            <button
+                                className={formClasses.alert + " " + formClasses.prime }
+                                style={{margin: "60px 0"}}
+                                onClick={deletePost}
+                            >
+                                удалить пост
+                            </button>
+                        }
+
+                        {status === "user" &&
+                            <span  className={appClasses.titleSmall}>станьте модератором, чтобы удалить заявку</span>
+                        }
+
                     </div>
                 </div>
             </div>

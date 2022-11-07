@@ -16,6 +16,7 @@ import {orgActions} from "../redux/actions/org.actions";
 import {store} from "../redux/store";
 import {validatorActions} from "../redux/actions/validator.actions";
 import {ROUTES} from "../components/router";
+import {checkDeltaTime} from "../heplers/checkers/checkDeltaTime";
 
 // вью создания поста
 const CreatePost = () => {
@@ -31,10 +32,18 @@ const CreatePost = () => {
     const errorEventHelpDescription = useSelector(state => state.validator.eventHelpDescription);
     const errorPrivateOrgName = useSelector(state => state.validator.privateOrgName);
 
+    const orgReviewed = useSelector(state => state.orgs.currentReviewedOrg);
+
     const isError = useSelector(state => state.alert.isError);
     const error = useSelector(state => state.alert.message);
 
     const [positions, setPositions] = useState([]);
+
+
+    let defaultPrivateOrgName;
+    if (orgReviewed) {
+        defaultPrivateOrgName = orgReviewed.name;
+    }
 
     const [values, setValues] = useState({
         title: "",
@@ -48,12 +57,14 @@ const CreatePost = () => {
         orgName: ""
     })
 
+    console.log(values);
+
     const checkers = {
         title: checkTitle,
         eventDescription: checkOrgDescription,
         audienceNum: checkAudienceNum,
         eventDate: checkDate,
-        deltaTime: checkAudienceNum,
+        deltaTime: checkDeltaTime,
         eventHelpDescription: checkOrgDescription,
         privateOrgName: values.isPrivate ? checkTitle : () => {
             return {isError: false, errorText: ""}
@@ -63,7 +74,7 @@ const CreatePost = () => {
     // при монтировании в DOM чистим валидацию, проверяем наличие ролей
     useEffect(() => {
         const positions = store.getState().authentication.user.positions.filter(position => position.status === "moder");
-        if (positions.length === 0){
+        if (positions.length === 0) {
             navigate(ROUTES.home);
         }
         setPositions(positions);
@@ -79,7 +90,18 @@ const CreatePost = () => {
     // обработка отправки формы
     function handleSubmit(e) {
         e.preventDefault();
-        dispatch(orgActions.createPost(values, checkers, navigate));
+        if (defaultPrivateOrgName) {
+            console.log("vlz");
+            dispatch(orgActions.createPost({
+                    ...values,
+                    isPrivate: true,
+                    privateOrgName: defaultPrivateOrgName,
+                },
+                checkers, navigate));
+        } else {
+            console.log("ура");
+            dispatch(orgActions.createPost(values, checkers, navigate));
+        }
     }
 
     // возвращаем разметку
@@ -127,7 +149,7 @@ const CreatePost = () => {
 
                             <Input
                                 title={"Максимальный срок хранения заявки"} placeholder={5}
-                                handlerData={checkAudienceNum}
+                                handlerData={checkDeltaTime}
                                 fieldName={"deltaTime"} errorText={deltaTimeError} setValue={setValue}
                                 type={"number"}
                             />
@@ -164,7 +186,7 @@ const CreatePost = () => {
                                     value={true}
                                     fieldName={"isPrivate"}
                                     checked={
-                                        values.isPrivate
+                                        values.isPrivate || !!defaultPrivateOrgName
                                     }/>
                                 <RadioButton
                                     title={"нет"}
@@ -172,7 +194,7 @@ const CreatePost = () => {
                                     value={false}
                                     fieldName={"isPrivate"}
                                     checked={
-                                        !values.isPrivate
+                                        !values.isPrivate && !defaultPrivateOrgName
                                     }/>
                             </label>
 
@@ -188,6 +210,7 @@ const CreatePost = () => {
                                     : ""}
                                 setValue={setValue}
                                 disable={!values.isPrivate}
+                                defaultValue={defaultPrivateOrgName}
                             />
 
                             <label className={inputClasses.form__label}>

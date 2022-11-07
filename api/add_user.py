@@ -29,17 +29,24 @@ class AddUser(Resource):
         if check_user_by_login(login) and check_org_by_name(org_name):
             user = get_user_by_login(login)
             org = get_org_by_name(org_name)
-            if org.id not in list(
-                map(lambda position: position.org_id, user.positions)
-            ):
-                try:
-                    pos = Position(user.id, org.id, args["status"])
-                    db.session.add(pos)
-                    db.session.commit()
-                    return {"org": org.serialize(), "user": user.serialize()}, 201
-                except ValueError:
-                    return {"ans": "wrong position status"}, 400
+            position = Position.query.filter(
+                Position.user_id == user.id, Position.org_id == org.id
+            ).first()
+            if position is None:
+                pos = Position(user.id, org.id, args["status"])
+                db.session.add(pos)
+                db.session.commit()
+                return {"org": org.serialize(), "user": user.serialize()}, 201
+            elif position.status != args["status"]:
+                Position.query.filter(
+                    Position.user_id == user.id, Position.org_id == org.id
+                ).delete()
+                db.session.commit()
+                pos = Position(user.id, org.id, args["status"])
+                db.session.add(pos)
+                db.session.commit()
+                return {"org": org.serialize(), "user": user.serialize()}, 20
             else:
-                return {"ans": "position already exist"}, 400
+                return "position already exist", 400
         else:
-            return {"ans": "wrong login or password"}, 400
+            return "wrong login", 400

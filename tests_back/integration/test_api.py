@@ -121,12 +121,11 @@ def test_get_user(front_client):
             "name": user2.name,
             "surname": user2.surname,
             "login": user2.login,
-            "password": password,
         },
     )
 
-    assert resp_patch2.status_code == 406
     assert resp_patch2.json == "existed user"
+    assert resp_patch2.status_code == 406
 
 
 # python -m pytest tests_back/integration/test_api.py::test_create_org -vv
@@ -154,7 +153,9 @@ def test_posts_org(front_client):
     db.session.commit()
 
     org_resp = front_client.get("/test/org/{}".format(resp.json["id"]))
-    assert org_resp.json["posts"] == list(map(lambda post: post.id, posts))
+    assert list(map(lambda p: p["id"], org_resp.json["posts"])) == list(
+        map(lambda post: post.id, posts)
+    )
     assert org_resp.status_code == 200
 
     org_del_resp = front_client.delete("/test/org/{}".format(resp.json["id"]))
@@ -295,5 +296,5 @@ def test_add_user(front_client):
         json={"user_login": user.login, "org_name": orgs[0].name, "status": "user"},
     )
 
-    assert add_user_resp.json["ans"] == "position already exist"
+    assert add_user_resp.json == "position already exist"
     assert add_user_resp.status_code == 400

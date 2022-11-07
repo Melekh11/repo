@@ -12,34 +12,40 @@ import Review from "../components/UI/review/review";
 const Home = () => {
 
     const dispatch = useDispatch()
-    const posts = useSelector(state => state.posts);
-    const reviews = useSelector(state => state.reviews);
+    const posts = useSelector(state => state.posts.allPosts) ?? [];
+    const privatePosts = useSelector(state => state.posts.privatePosts) ?? [];
+    const reviews = useSelector(state => state.reviews) ?? [];
 
     useEffect(() => {
         dispatch(postsAction.getAll());
-        dispatch(reviewActions.getAll())
+        dispatch(reviewActions.getAll());
     }, [])
 
     return (
         <>
             <Header/>
-            <div style={{margin: "150px 0", display: "flex", width: "100%"}}>
+            <div style={{margin: "100px 0", display: "flex", width: "100%"}}>
                 <div className={appClasses.flexRow}>
 
                     <div className={appClasses.flexColumn}>
 
-                        {posts.length === 0 &&
-                            <p className={appClasses.text}>постов пока нет</p>}
 
-                        {!!posts.length &&
-                            <p className={appClasses.text}>возможно, вам подойдут эти заявки</p>
-                            && posts.map(post =>
-                                (<Post
-                                    key={post.id}
-                                    title={post.name}
-                                    postId={post.id}
-                                    description={post.short_desc}/>)
+                        {posts.length === 0 &&
+                                    <p className={appClasses.text}>постов пока нет</p>}
+
+                        {posts.length > 0 &&
+                            <p className={appClasses.text}>возможно, вам подойдут эти заявки</p>}
+
+                        {posts.length > 0 &&
+                            posts.map(post =>
+                            (<Post
+                            key={post.id}
+                            title={post.name}
+                            postId={post.id}
+                            description={post.short_desc}/>)
                             )}
+
+
                         <Link className={appClasses.linkColor} to={ROUTES.createPost}>создать заявку</Link>
 
 
@@ -48,10 +54,12 @@ const Home = () => {
                     <div className={appClasses.verticalLine}/>
 
                     <div className={appClasses.flexColumn}>
-                        {(!reviews || reviews.length === 0) &&
+                        {reviews.length === 0 &&
                             <p className={appClasses.text}>на ваши заявки пока не откликнулись</p>}
-                        {!!reviews.length &&
-                            <p className={appClasses.text}>возможно, вам подойдут эти заявки</p>
+                        {reviews.length > 0 &&
+                            <p className={appClasses.text}>на ваши заявки откликнулись</p>}
+
+                        {reviews.length > 0
                             && reviews.map(review =>
                                 (<Review
                                     key={review.id}
@@ -60,9 +68,29 @@ const Home = () => {
                                     orgName={review.org_name}
                                     status={review.time_option}/>)
                             )}
+
+                        {privatePosts.length === 0 &&
+                            <p className={appClasses.text}>у вас нет частных заявок</p>
+                        }
+
+                        {privatePosts.length > 0 &&
+                            <p className={appClasses.titleSmall}>вам есть частные заявки!</p>
+                        }
+
+                        {privatePosts.length >= 0 &&
+                            privatePosts.map(post =>
+                                <Post
+                                    key={post.id}
+                                    title={post.name}
+                                    postId={post.id}
+                                    description={post.short_desc}/>)
+
+                        }
+
                     </div>
                 </div>
             </div>
+
         </>
     )
 }

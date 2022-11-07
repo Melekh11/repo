@@ -3,6 +3,8 @@ from flask_restful import Resource
 from database import db
 from tables.__all_models import Organisation as Org
 from tables.positions import Position
+from tables.posts import Post
+from tables.reviews import Review
 
 
 class Organisation(Resource):
@@ -27,11 +29,14 @@ class Organisation(Resource):
         org = Org.query.filter(Org.id == id).first()
         if org:
             for position in org.participants:
-                position.delete()
+                Position.query.filter(
+                    Position.org_id == position.org_id,
+                    Position.user_id == position.user_id,
+                ).delete()
             for post in org.posts:
                 for review in post.reviews:
-                    review.delete()
-                post.delete()
+                    Review.query.filter(Review.id == review.id).delete()
+                Post.query.filter(Post.id == post.id).delete()
             Org.query.filter(Org.id == id).delete()
             db.session.commit()
             return {"ans": "success"}, 200

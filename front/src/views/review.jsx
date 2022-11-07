@@ -27,7 +27,7 @@ const Review = () => {
         if (currentReview) {
             reviewActions.deleteReview(currentReview.id);
             postsAction.deletePost(currentReview.id_post);
-            navigate(ROUTES.allPosts);
+            navigate(ROUTES.home);
         }
     }
 

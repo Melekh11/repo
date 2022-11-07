@@ -46,5 +46,6 @@ class Review(db.Model):
             "contacts": self.contacts,
             "id_post": self.id_post,
             "org_name": self.post.org.name,
+            "org_id": self.post.org.id,
             "post_name": self.post.name,
         }

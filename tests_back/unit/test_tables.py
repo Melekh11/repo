@@ -1,4 +1,4 @@
-from tables.models import User, Organization, Post
+from tables.__all_models import User, Organisation, Post
 import pytest
 import datetime
 from faker import Faker
@@ -24,7 +24,7 @@ test_posts = [
         datetime.date(
             year=int(fake.date().split("-")[0]),
             month=int(fake.date().split("-")[1]),
-            day=int(fake.date().split("-")[2]) % 28,
+            day=int(fake.date().split("-")[2]),
         ),
         fake.text(),
         fake.text(),
@@ -46,7 +46,7 @@ def test_add_use(name, surname, login, email, password):
 
 @pytest.mark.parametrize("name, contacts", test_organizations)
 def test_add_org(name, contacts):
-    org = Organization(name=name, contacts=contacts)
+    org = Organisation(name=name, contacts=contacts)
     assert org.contacts == contacts
     assert org.name == name
 

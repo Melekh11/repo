@@ -20,17 +20,24 @@ const Org = () => {
 
     const user = useSelector(state => state.authentication.user);
 
-    let status = "";
+    let status = "visitor";
 
     function deleteOrg(){
         dispatch(orgActions.deleteOrgById(currentOrg.id));
         navigate(ROUTES.home);
     }
 
+    function handlePrivate(){
+        dispatch(orgActions.setCurrentReviewedOrg(currentOrg.id));
+        navigate(ROUTES.createPost)
+    }
+
     if (currentOrg) {
         user.positions.forEach(position => {
             if (position.org_id === currentOrg.id && position.status === "moder") {
                 status = "moder";
+            } else if (position.org_id === currentOrg.id && position.status === "user"){
+                status = "user"
             }
         })
     }
@@ -62,7 +69,7 @@ const Org = () => {
                         </button>}
                     </div>
 
-                    <div style={{margin: "30px"}}>
+                    <div style={{margin: "30px", width: "300px"}} className={appClasses.flexColumn}>
                         {currentOrg && !!currentOrg.posts.length &&
                             <span className={appClasses.titleSmall}>заявки организации:</span>}
                         {currentOrg && !!currentOrg.posts.length &&
@@ -75,6 +82,14 @@ const Org = () => {
                             )}
                         {(!currentOrg || !currentOrg.posts.length) &&
                             <p className={appClasses.text}>пока постов от организации нет</p>
+                        }
+                        { status === "visitor" &&
+                            <button
+                                className={ formClasses.prime }
+                                onClick={handlePrivate}
+                            >
+                                создать приватный пост
+                            </button>
                         }
                     </div>
                 </div>

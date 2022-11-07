@@ -1,13 +1,16 @@
 import {postConstants} from "../constants/post.constants";
 
-function postReducer(state={}, action){
+function postReducer(state={allPosts: [], privatePosts: []}, action){
     switch (action.type){
         case postConstants.UPDATE_POST:
-            return action.posts
+            return {...state, allPosts: action.posts}
+        case postConstants.SET_PRIVATE_POSTS:
+            console.log("posts", action.posts);
+            return {...state, privatePosts: action.posts}
         case postConstants.SET_POST:
-            return {currentPost: action.post}
+            return {...state, currentPost: action.post}
         case postConstants.CLEAR_POSTS:
-            return {}
+            return {allPosts: [], privatePosts: []}
         default:
             return state
     }
