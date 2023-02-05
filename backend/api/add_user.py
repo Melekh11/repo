@@ -15,7 +15,7 @@ parser.add_argument(
     "user_login", type=str, required=True, help="missing user_login atr"
 )
 parser.add_argument("org_name", type=str, required=True, help="missing org_name atr")
-parser.add_argument("status", type=str, required=True, help="missing status atr")
+parser.add_argument("status_id", type=int, required=True, help="missing status_id atr")
 
 
 class AddUser(Resource):
@@ -33,19 +33,23 @@ class AddUser(Resource):
                 Position.user_id == user.id, Position.org_id == org.id
             ).first()
             if position is None:
-                pos = Position(user.id, org.id, args["status"])
+                pos = Position(
+                    user_id=user.id, org_id=org.id, status_id=args["status_id"]
+                )
                 db.session.add(pos)
                 db.session.commit()
                 return {"org": org.serialize(), "user": user.serialize()}, 201
-            elif position.status != args["status"]:
+            elif position.status_id != args["status_id"]:
                 Position.query.filter(
                     Position.user_id == user.id, Position.org_id == org.id
                 ).delete()
                 db.session.commit()
-                pos = Position(user.id, org.id, args["status"])
+                pos = Position(
+                    user_id=user.id, org_id=org.id, status_id=args["status_id"]
+                )
                 db.session.add(pos)
                 db.session.commit()
-                return {"org": org.serialize(), "user": user.serialize()}, 20
+                return {"org": org.serialize(), "user": user.serialize()}, 200
             else:
                 return "position already exist", 400
         else:

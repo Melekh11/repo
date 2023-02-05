@@ -1,6 +1,5 @@
 .idea
-__pycache__/
-test.py
-venv
-app.db
-test_app.db
+.pytest_cache
+.pytest
+.DS_Store
+.vscode/

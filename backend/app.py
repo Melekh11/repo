@@ -1,7 +1,5 @@
 import os
 
-from flask import send_from_directory
-
 from app_config import Config
 from flask_migrate import Migrate
 from create_app import create_app
@@ -13,20 +11,9 @@ api = Api(app)
 migrate = Migrate(app, db)
 
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
-def serve(path):
-
-    if path != "" and os.path.exists(app.static_folder + "/" + path):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, "index.html")
-
-
-# # настройка выдачи статики
-# @app.route("/")
-# def index():
-#     return flask.send_from_directory(os.path.join("front", "build"), "index.html")
+@app.route("/ping")
+def test_connection():
+    return "pong"
 
 
 from api.signup import SignUp
@@ -38,7 +25,7 @@ from api.add_user import AddUser
 from api.post import Post, Posts
 from api.review import Review, Reviews
 from api.create_review import CreateReview
-from api.org import Organisation, Organisations
+from api.org import Organization, Organizations
 
 # добавление api ручек
 api.add_resource(SignUp, "/signup")
@@ -52,8 +39,8 @@ api.add_resource(Post, "/post/<id>")
 api.add_resource(CreateReview, "/review")
 api.add_resource(Review, "/review/<id>")
 api.add_resource(Reviews, "/reviews")
-api.add_resource(Organisation, "/org/<id>")
-api.add_resource(Organisations, "/orgs")
+api.add_resource(Organization, "/org/<id>")
+api.add_resource(Organizations, "/orgs")
 
 
 # запуск приложения

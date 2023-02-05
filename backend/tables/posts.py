@@ -1,5 +1,5 @@
 from database import db
-from tables.organisations import Organisation
+from tables.organizations import Organization
 import datetime
 
 
@@ -15,7 +15,7 @@ class Post(db.Model):
     short_desc = db.Column(db.Text(300), nullable=False)
     help_desc = db.Column(db.Text(300), nullable=False)
 
-    id_org = db.Column(db.Integer, db.ForeignKey("organisations.id"))
+    id_org = db.Column(db.Integer, db.ForeignKey("organizations.id"))
     id_org_private = db.Column(db.Integer, default=0)
 
     reviews = db.relationship("Review", backref="post", lazy="dynamic")
@@ -27,7 +27,7 @@ class Post(db.Model):
         """
         if self.id_org_private == 0:
             return None
-        return Organisation.query.filter(Organisation.id == self.id_org_private).first()
+        return Organization.query.filter(Organization.id == self.id_org_private).first()
 
     def __repr__(self):
         """представление экземпляра класса"""

@@ -1,13 +1,13 @@
 from flask_restful import Resource
 
 from database import db
-from tables.__all_models import Organisation as Org
+from tables.__all_models import Organization as Org
 from tables.positions import Position
 from tables.posts import Post
 from tables.reviews import Review
 
 
-class Organisation(Resource):
+class Organization(Resource):
     """класс API для получения / удаления организации"""
 
     def get(self, id):
@@ -44,7 +44,7 @@ class Organisation(Resource):
             return {"ans": "no org with id {}".format(id)}, 403
 
 
-class Organisations(Resource):
+class Organizations(Resource):
     """класс API для получения всех организаций"""
 
     def get(self):

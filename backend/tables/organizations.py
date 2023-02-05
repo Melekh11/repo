@@ -1,10 +1,10 @@
 from database import db
 
 
-class Organisation(db.Model):
+class Organization(db.Model):
     """класс организации в таблицах бд"""
 
-    __tablename__ = "organisations"
+    __tablename__ = "organizations"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
     contacts = db.Column(db.Text, nullable=False)

@@ -1,6 +1,6 @@
 import datetime
 from faker import Faker
-from tables.__all_models import User, Organisation, Position, Post, Review
+from tables.__all_models import User, Organization, Position, Post, Review
 
 fake = Faker()
 
@@ -44,16 +44,16 @@ def create_org(n=1):
     :return: Organization[]
     """
     if n == 1:
-        return Organisation(name=fake.name(), contacts=fake.text())
+        return Organization(name=fake.name(), contacts=fake.text())
     return list(
         map(
-            lambda org: Organisation(name=org[0], contacts=org[1]),
+            lambda org: Organization(name=org[0], contacts=org[1]),
             [(fake.name(), fake.text()) for _ in range(n)],
         )
     )
 
 
-def create_position(user, org, status):
+def create_position(user, org, status_id):
     """
     создаёт экземпляр класса Position
     :param user: экземпляр класса User
@@ -61,7 +61,7 @@ def create_position(user, org, status):
     :param status: статусс пользователя в проекте
     :return: Position
     """
-    return Position(user_id=user.id, org_id=org.id, status=status)
+    return Position(user_id=user.id, org_id=org.id, status_id=status_id)
 
 
 def create_post(id_org, id_private=-1):

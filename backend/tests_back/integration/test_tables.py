@@ -1,10 +1,10 @@
-from tables.__all_models import User, Organisation, Post, Review
+from tables.__all_models import User, Organization, Post, Review
 
 
 # python -m pytest tests_back/integration/test_tables.py::test_user_of_org
 def test_user_of_org(test_db):
     members = [[], []]
-    orgs = Organisation.query.all()
+    orgs = Organization.query.all()
     assert orgs[0].id == 1
     assert orgs[1].id == 2
     assert len(User.query.all()) == 4

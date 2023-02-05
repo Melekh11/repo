@@ -1,4 +1,5 @@
-from tables.__all_models import User, Organisation
+from tables.__all_models import User, Organization, Status
+from database import db
 
 # человекочитаемые helper'ы
 
@@ -36,7 +37,7 @@ def check_org_by_name(name):
     :param name: имя организации для проверки
     :return: boolean
     """
-    return len(Organisation.query.filter(Organisation.name == name).all()) == 1
+    return len(Organization.query.filter(Organization.name == name).all()) == 1
 
 
 def get_user_by_id(id):
@@ -63,7 +64,7 @@ def get_org_by_name(name):
     :param name: имя искомой организации
     :return: Organization
     """
-    return Organisation.query.filter(Organisation.name == name).first()
+    return Organization.query.filter(Organization.name == name).first()
 
 
 def check_unique_org(name):
@@ -72,7 +73,7 @@ def check_unique_org(name):
     :param name: имя для поиска
     :return: boolean
     """
-    return len(Organisation.query.filter(Organisation.name == name).all()) == 0
+    return len(Organization.query.filter(Organization.name == name).all()) == 0
 
 
 def check_unique_user(login, email):
@@ -83,3 +84,7 @@ def check_unique_user(login, email):
     :return: boolean
     """
     return check_unique_login(login) and check_unique_email(email)
+
+
+def find_status_id(status_name):
+    return Status.query.filter(Status.status_name == status_name).first().id

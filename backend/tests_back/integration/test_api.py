@@ -1,5 +1,6 @@
 from faker import Faker
 from back_utils.data_generator import create_users, create_org, create_post
+from back_utils.helpers import find_status_id
 from database import db
 
 fake = Faker()
@@ -276,10 +277,16 @@ def test_add_user(front_client):
     db.session.add(user)
     db.session.commit()
 
+    status_user_id = find_status_id("user")
+
     for org in orgs:
         add_user_resp = front_client.post(
             "/test/add-user",
-            json={"user_login": user.login, "org_name": org.name, "status": "user"},
+            json={
+                "user_login": user.login,
+                "org_name": org.name,
+                "status_id": status_user_id,
+            },
         )
 
         assert add_user_resp.status_code == 201
@@ -293,7 +300,11 @@ def test_add_user(front_client):
 
     add_user_resp = front_client.post(
         "/test/add-user",
-        json={"user_login": user.login, "org_name": orgs[0].name, "status": "user"},
+        json={
+            "user_login": user.login,
+            "org_name": orgs[0].name,
+            "status_id": status_user_id,
+        },
     )
 
     assert add_user_resp.json == "position already exist"

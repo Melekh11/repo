@@ -7,7 +7,6 @@ class Config(object):
     """настройка конфига flask приложения под production"""
 
     SECRET_KEY = os.environ.get("SECRET_KEY") or "gum_matinfo_luchshie17"
-    static_folder = "front/build"
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DATABASE_URL"
     ) or "sqlite:///" + os.path.join(basedir, "app.db")

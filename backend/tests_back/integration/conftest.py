@@ -5,6 +5,7 @@ from back_utils.data_generator import (
     create_post,
     create_review,
 )
+from back_utils.helpers import find_status_id
 from create_app import create_app
 from test_app_config import Config
 from flask_restful import Api
@@ -34,7 +35,7 @@ def front_client():
     from api.signin import SignIn
     from api.user import User
     from api.create_org import CreateOrganization as CreateOrg
-    from api.org import Organisation
+    from api.org import Organization
     from api.create_post import CreatePost
     from api.post import Post
     from api.add_user import AddUser
@@ -43,7 +44,7 @@ def front_client():
     api.add_resource(SignIn, "/test/signin")
     api.add_resource(User, "/test/user/<user_id>")
     api.add_resource(CreateOrg, "/test/org")
-    api.add_resource(Organisation, "/test/org/<id>")
+    api.add_resource(Organization, "/test/org/<id>")
     api.add_resource(CreatePost, "/test/post")
     api.add_resource(Post, "/test/post/<id>")
     api.add_resource(AddUser, "/test/add-user")
@@ -81,12 +82,16 @@ def test_db():
     # первые 2 пользователя - админы первых друх организаций
     # 3-й и 4-й пользователи работают на 1-ю и 2-ю организации соответсвенно как участники
     # первый пользовтель помимо админа 1-й организации раюотает во 2-й как участник
+
+    moder_status_id = find_status_id("moder")
+    user_status_id = find_status_id("user")
+
     positions = [
-        create_position(users[0], organizations[0], "moder"),
-        create_position(users[1], organizations[1], "moder"),
-        create_position(users[2], organizations[0], "moder"),
-        create_position(users[3], organizations[1], "moder"),
-        create_position(users[0], organizations[1], "user"),
+        create_position(users[0], organizations[0], moder_status_id),
+        create_position(users[1], organizations[1], moder_status_id),
+        create_position(users[2], organizations[0], moder_status_id),
+        create_position(users[3], organizations[1], moder_status_id),
+        create_position(users[0], organizations[1], user_status_id),
     ]
 
     for pos in positions:
