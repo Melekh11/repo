@@ -1,5 +1,0 @@
-export const validatorConstants = {
-    CLEAR: 'CLEAR_VALIDATE',
-    SET_IS_ERROR: "SET_IS_ERROR",
-    PASSWORD_VALIDATION: "PASSWORD_VALIDATION"
-}
