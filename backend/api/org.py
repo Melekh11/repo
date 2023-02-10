@@ -19,7 +19,7 @@ class Organization(Resource):
         if org:
             return org.serialize(), 200
         else:
-            return {"ans": "no org with id {}".format(id)}, 403
+            return {"message": "no org with id {}".format(id)}, 403
 
     def delete(self, id):
         """
@@ -41,7 +41,7 @@ class Organization(Resource):
             db.session.commit()
             return {"ans": "success"}, 200
         else:
-            return {"ans": "no org with id {}".format(id)}, 403
+            return {"message": "no org with id {}".format(id)}, 403
 
 
 class Organizations(Resource):

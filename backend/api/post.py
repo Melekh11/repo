@@ -16,7 +16,7 @@ class Post(Resource):
         if post:
             return post.serialize(), 200
         else:
-            return {"ans": "there is no post with id {}".format(id)}, 403
+            return {"message": "there is no post with id {}".format(id)}, 403
 
     def delete(self, id):
         """
@@ -28,7 +28,7 @@ class Post(Resource):
             db.session.commit()
             return {"ans": "success"}, 200
         else:
-            return {"ans": "there is no post with id {}".format(id)}, 403
+            return {"message": "there is no post with id {}".format(id)}, 403
 
 
 class Posts(Resource):

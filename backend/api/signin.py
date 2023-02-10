@@ -17,6 +17,6 @@ class SignIn(Resource):
             if user.check_password(args["password"]):
                 return user.serialize(), 202
             else:
-                return "wrong password", 401
+                return {"message": "wrong password"}, 401
         else:
-            return "no user with login {}".format(args["login"]), 406
+            return {"message": "no user with login {}".format(args["login"])}, 406
