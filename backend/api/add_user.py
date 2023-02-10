@@ -51,6 +51,6 @@ class AddUser(Resource):
                 db.session.commit()
                 return {"org": org.serialize(), "user": user.serialize()}, 200
             else:
-                return "position already exist", 400
+                return {"message": "position already exist"}, 400
         else:
-            return "wrong login", 400
+            return {"message": "wrong login"}, 400

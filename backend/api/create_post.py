@@ -17,7 +17,7 @@ parser.add_argument(
 parser.add_argument(
     "short_desc", type=str, required=True, help="missing short_desc atr"
 )
-parser.add_argument("help_desc", type=str, required=True, help="missing help_desc atr")
+parser.add_argument("help_desc", type=str, help="missing help_desc atr")
 parser.add_argument("org_name", type=str, required=True, help="missing org_name atr")
 parser.add_argument("org_private_name", type=str)
 
@@ -36,22 +36,24 @@ class CreatePost(Resource):
         )
         org = get_org_by_name(args["org_name"])
         if org is None:
-            return f"there is no org with name '{args['org_name']}'", 404
+            return {"message": f"there is no org with name '{args['org_name']}'"}, 404
 
         post = Post(
             name=args["name"],
             date_start=date_start,
             delta_time=timedelta(days=args["delta_time"]),
             short_desc=args["short_desc"],
-            help_desc=args["help_desc"],
             id_org=org.id,
+            help_desc="...",
         )
         if args["org_private_name"] is not None and args["org_private_name"] != "":
             org_private = get_org_by_name(args["org_private_name"])
             if org_private is not None:
                 post.id_org_private = org_private.id
             else:
-                return f"there is no org with name '{args['org_private_name']}'", 400
+                return {
+                    "message": f"there is no org with name '{args['org_private_name']}'"
+                }, 400
         db.session.add(post)
         db.session.commit()
         return post.serialize(), 201

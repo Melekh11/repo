@@ -32,4 +32,4 @@ class SignUp(Resource):
             db.session.commit()
             return user.serialize(), 201
         else:
-            return "existed user", 406
+            return {"message": "existed user"}, 406

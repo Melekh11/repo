@@ -13,7 +13,7 @@ class Post(db.Model):
     date_start = db.Column(db.Date, nullable=False)
     delta_time = db.Column(db.Interval, default=datetime.timedelta(days=30))
     short_desc = db.Column(db.Text(300), nullable=False)
-    help_desc = db.Column(db.Text(300), nullable=False)
+    help_desc = db.Column(db.Text(300))
 
     id_org = db.Column(db.Integer, db.ForeignKey("organizations.id"))
     id_org_private = db.Column(db.Integer, default=0)
@@ -48,7 +48,6 @@ class Post(db.Model):
             "date_start": str(self.date_start),
             "delta_time": str(self.delta_time),
             "short_desc": self.short_desc,
-            "help_desc": self.help_desc,
             "id_org": self.id_org,
             "id_org_priv": self.id_org_private,
             "org_name": self.org.name,

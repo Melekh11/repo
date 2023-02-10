@@ -10,7 +10,7 @@ def check_unique_login(login):
     :param login: логин для проверки
     :return: boolean
     """
-    return len(User.query.filter(User.login == login).all()) == 0
+    return len(User.query.filter(User.login == login).all())
 
 
 def check_user_by_login(login):
@@ -83,7 +83,7 @@ def check_unique_user(login, email):
     :param email: почта для сравнения
     :return: boolean
     """
-    return check_unique_login(login) and check_unique_email(email)
+    return check_unique_login(login) == 0 and check_unique_email(email)
 
 
 def find_status_id(status_name):

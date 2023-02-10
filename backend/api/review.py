@@ -15,7 +15,7 @@ class Review(Resource):
         if review:
             return review.serialize(), 200
         else:
-            return {"ans": "there is no post with id {}".format(id)}, 403
+            return {"message": "there is no post with id {}".format(id)}, 403
 
     def delete(self, id):
         review = TableReview.query.filter(TableReview.id == id).first()
@@ -24,4 +24,4 @@ class Review(Resource):
             db.session.commit()
             return {"ans": "success"}, 200
         else:
-            return {"ans": "there is no post with id {}".format(id)}, 403
+            return {"message": "there is no post with id {}".format(id)}, 403

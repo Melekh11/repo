@@ -22,4 +22,4 @@ class CreateOrganization(Resource):
             db.session.commit()
             return org.serialize(), 201
         else:
-            return "org {} already exist".format(args["name"]), 406
+            return {"message": "org {} already exist".format(args["name"])}, 406

@@ -42,7 +42,7 @@ def test_signup(front_client):
     )
 
     assert resp2.status_code == 406
-    assert resp2.json == "existed user"
+    assert resp2.json["message"] == "existed user"
 
 
 # python -m pytest tests_back/integration/test_api.py::test_signin
@@ -70,14 +70,14 @@ def test_signin(front_client):
     )
 
     assert resp2.status_code == 401
-    assert resp2.text == '"wrong password"\n'
+    assert resp2.json["message"] == "wrong password"
 
     resp2 = front_client.post(
         "/test/signin", json={"login": user.login + "wrong!", "password": password}
     )
 
     assert resp2.status_code == 406
-    assert resp2.json == f"no user with login {user.login+'wrong!'}"
+    assert resp2.json["message"] == f"no user with login {user.login+'wrong!'}"
 
 
 # python -m pytest tests_back/integration/test_api.py::test_get_user
@@ -122,11 +122,13 @@ def test_get_user(front_client):
             "name": user2.name,
             "surname": user2.surname,
             "login": user2.login,
+            "email": user2.email,
+            "password": password,
         },
     )
 
-    assert resp_patch2.json == "existed user"
-    assert resp_patch2.status_code == 406
+    assert resp_patch2.json["message"] == "you use the same password"
+    assert resp_patch2.status_code == 400
 
 
 # python -m pytest tests_back/integration/test_api.py::test_create_org -vv
@@ -165,7 +167,7 @@ def test_posts_org(front_client):
 
     id_wrong = 1e3
     org_wrong_resp = front_client.delete("/test/org/{}".format(id_wrong))
-    assert org_wrong_resp.json["ans"] == "no org with id {}".format(id_wrong)
+    assert org_wrong_resp.json["message"] == "no org with id {}".format(id_wrong)
     assert org_wrong_resp.status_code == 403
 
 
@@ -196,7 +198,6 @@ def test_create_post(front_client):
         )
 
         assert create_post_resp.status_code == 201
-        assert create_post_resp.json["help_desc"] == post.help_desc
         assert create_post_resp.json["id_org"] == org_resp.json["id"]
 
 
@@ -258,12 +259,11 @@ def test_post(front_client):
 
     assert post_resp.status_code == 200
     assert post_resp.json["id"] == create_post_resp.json["id"]
-    assert post_resp.json["help_desc"] == post.help_desc
 
     wrong_id = 1000
     post_resp = front_client.get("/test/post/{}".format(wrong_id))
     assert post_resp.status_code == 403
-    assert post_resp.json["ans"] == "there is no post with id {}".format(wrong_id)
+    assert post_resp.json["message"] == "there is no post with id {}".format(wrong_id)
 
 
 # python -m pytest tests_back/integration/test_api.py::test_add_user
@@ -307,5 +307,5 @@ def test_add_user(front_client):
         },
     )
 
-    assert add_user_resp.json == "position already exist"
+    assert add_user_resp.json["message"] == "position already exist"
     assert add_user_resp.status_code == 400

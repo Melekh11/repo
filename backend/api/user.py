@@ -35,11 +35,13 @@ class User(Resource):
         if user:
             if args["password"] is not None and args["password"] != "":
                 if user.check_password(args["password"]):
-                    return "you use the same password", 400
+                    return {"message": "you use the same password"}, 400
                 user.set_password(args["password"])
                 db.session.commit()
 
-            if check_unique_login(args["login"]):
+            if check_unique_login(args["login"]) == 0 or (
+                check_unique_login(args["login"]) == 1 and user.login == args["login"]
+            ):
                 user.name = args["name"]
                 user.surname = args["surname"]
                 user.login = args["login"]
@@ -47,6 +49,6 @@ class User(Resource):
                 db.session.commit()
                 return user.serialize(), 200
             else:
-                return "existed user", 406
+                return {"message": "existed user"}, 406
         else:
-            return "there is no user with id {}".format(id), 404
+            return {"message": "there is no user with id {}".format(id)}, 404
