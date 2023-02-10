@@ -12,3 +12,17 @@ repos:
     -   id: black
         language: python
         exclude: ^migrations/
+-   repo: local
+    hooks:
+    -   id: lint back
+        name: lint front
+        language: system
+        entry: npm run lint
+        pass_filenames: false
+        always_run: true
+    -   id: test
+        name: test
+        language: system
+        entry: npm run test
+        pass_filenames: false
+        always_run: true

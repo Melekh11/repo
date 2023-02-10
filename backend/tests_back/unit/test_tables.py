@@ -24,7 +24,7 @@ test_posts = [
         datetime.date(
             year=int(fake.date().split("-")[0]),
             month=int(fake.date().split("-")[1]),
-            day=int(fake.date().split("-")[2]),
+            day=max(1, int(fake.date().split("-")[2]) - 5),
         ),
         fake.text(),
         fake.text(),

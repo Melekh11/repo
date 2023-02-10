@@ -1,0 +1,23 @@
+{
+  "name": "our-lyc-conf-precommit",
+  "version": "1.0.0",
+  "description": "file created for running pre-commit",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "cd backend && source venv/bin/activate && python -m pytest tests_back",
+    "lint": "cd front && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Melekh11/repo.git"
+  },
+  "author": "Maty",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Melekh11/repo/issues"
+  },
+  "homepage": "https://github.com/Melekh11/repo#readme"
+}
