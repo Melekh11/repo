@@ -1,9 +1,11 @@
-const express = require('express');
-const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
+const express = require("express");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+// const cors = require('cors');
 
 const app = express();
-const config = require('./webpack.config.js');
+// app.use(cors());
+const config = require("./webpack.config.js");
 const compiler = webpack(config);
 
 const port = process.env.PORT || 3000;
@@ -14,6 +16,6 @@ app.use(
   })
 );
 
-app.listen(port, ( ) =>   {
+app.listen(port, () => {
   console.log(`App listening on port ${port}!\n`);
 });

@@ -5,8 +5,6 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:react/recommended',
-    'standard-with-typescript',
     'plugin:@typescript-eslint/recommended'
   ],
   overrides: [
@@ -21,6 +19,9 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
-    "@typescript-eslint/semi": 0
+    "@typescript-eslint/semi": 0,
+    "@typescript-eslint/quotes": 0,
+    "@typescript-eslint/member-delimiter-style": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
   }
 }
